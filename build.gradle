@@ -1,0 +1,36 @@
+plugins {
+  id 'java'
+}
+
+ext {
+  replay_version = '2.3.1'
+  replay_group = 'io.github.replay-framework'
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
+compileJava {
+  options.debugOptions.debugLevel = "source,lines,vars"
+  options.fork = true
+  options.compilerArgs << '-parameters' //<< '-Xlint:deprecation'
+}
+
+configurations.implementation {
+  exclude group: 'org.hibernate'
+  exclude group: 'org.hibernate.common'
+  exclude group: 'net.bytebuddy'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation("${replay_group}:javanet:${replay_version}")
+  implementation("${replay_group}:framework:${replay_version}")
+//  implementation("${replay_group}:fastergt:${replay_version}")
+}
