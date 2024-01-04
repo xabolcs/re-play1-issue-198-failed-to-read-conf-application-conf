@@ -2,6 +2,7 @@ plugins {
   id 'java'
   id 'application'
 
+  id 'com.google.cloud.tools.jib' version '3.4.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.1'
 }
 
@@ -29,6 +30,14 @@ gitProperties {
     extProperty = 'git' // git properties will be put in a map at project.ext.git
     keys = ['git.commit.id', 'git.commit.id.abbrev', 'git.commit.time']
     customProperty 'git.commit.id.describe', { it.describe(always: true) }
+}
+
+jib {
+  to.image = 'replay-example:issue-198'
+
+  container {
+    creationTime = project.provider { project.ext.git['git.commit.time'] }
+  }
 }
 
 jar {
