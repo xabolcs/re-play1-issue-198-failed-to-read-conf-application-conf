@@ -1,6 +1,8 @@
 plugins {
   id 'java'
   id 'application'
+
+  id 'com.gorylenko.gradle-git-properties' version '2.4.1'
 }
 
 ext {
@@ -20,6 +22,20 @@ application {
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
+gitProperties {
+    extProperty = 'git' // git properties will be put in a map at project.ext.git
+    keys = ['git.commit.id', 'git.commit.id.abbrev', 'git.commit.time']
+    customProperty 'git.commit.id.describe', { it.describe(always: true) }
+}
+
+jar {
+  manifest {
+    attributes(
+      'Build-Revision': project.provider { project.ext.git['git.commit.id.describe'] }
+    )
   }
 }
 
