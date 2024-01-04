@@ -1,15 +1,43 @@
 plugins {
   id 'java'
+  id 'application'
 }
 
 ext {
+  shortName = 'replay-example-issue-198'
+  groupName = 'replay.example'
+  className = groupName + '.Application'
+
   replay_version = '2.3.1'
   replay_group = 'io.github.replay-framework'
+}
+
+application {
+  mainClassName = project.ext.className
+  applicationName = project.ext.shortName
 }
 
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
+base {
+  archivesName = project.ext.shortName
+}
+
+distributions {
+  main {
+    distributionBaseName = project.ext.shortName
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir 'app'
+    }
   }
 }
 
