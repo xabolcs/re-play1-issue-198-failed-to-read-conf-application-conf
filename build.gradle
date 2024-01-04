@@ -41,6 +41,10 @@ sourceSets {
   }
 }
 
+processResources {
+  from('app') { include 'play.plugins' }
+}
+
 compileJava {
   options.debugOptions.debugLevel = "source,lines,vars"
   options.fork = true
